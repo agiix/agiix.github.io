@@ -69,58 +69,56 @@
     <script>
         var isTransitioning = false;
 
-        function flipImage() {
-            if (isTransitioning) {
-                return; // If already transitioning, do nothing
-            }
+function flipImage() {
+    if (isTransitioning) {
+        return; // If already transitioning, do nothing
+    }
 
-            var image = document.getElementById('alexImage');
-            var counterSpan = document.getElementById('counter');
-            var incrementButton = document.getElementById('incrementButton');
+    var image = document.getElementById('alexImage');
+    var counterSpan = document.getElementById('counter');
+    var incrementButton = document.getElementById('incrementButton');
 
+    // Add the 'hidden' class to start the fade-out transition
+    image.classList.add('hidden');
+    isTransitioning = true;
+
+    // Disable the button during transitions
+    incrementButton.disabled = true;
+
+    // Update the counter value on the page
+    counterSpan.innerText = parseInt(counterSpan.innerText) + 1;
+
+    // Change the image source after the fade-out is complete
+    setTimeout(function () {
+        image.src = 'static/angry_alex.png';
+
+        // Remove the 'hidden' class to start the fade-in transition
+        setTimeout(function () {
+            image.classList.remove('hidden');
+        }, 50); // A small delay to ensure smooth transition
+
+        // Revert back to the original image after 5 seconds with the same animation
+        setTimeout(function () {
             // Add the 'hidden' class to start the fade-out transition
             image.classList.add('hidden');
-            isTransitioning = true;
 
-            // Disable the button during transitions
-            incrementButton.disabled = true;
-
-            // Simulate a server request delay with setTimeout
+            // Change the image source after the fade-out is complete
             setTimeout(function () {
-                // Update the counter value on the page
-                counterSpan.innerText = parseInt(counterSpan.innerText) + 1;
+                image.src = 'static/normal_alex.png';
 
-                // Change the image source after the fade-out is complete
+                // Remove the 'hidden' class to start the fade-in transition
                 setTimeout(function () {
-                    image.src = 'static/angry_alex.png';
+                    image.classList.remove('hidden');
 
-                    // Remove the 'hidden' class to start the fade-in transition
-                    setTimeout(function () {
-                        image.classList.remove('hidden');
-                    }, 250); // A small delay to ensure smooth transition
+                    // Enable the button after the transition back is complete
+                    incrementButton.disabled = false;
+                    isTransitioning = false;
+                }, 50); // A small delay to ensure smooth transition
+            }, 1000); // Adjust the timeout to match the transition duration
+        }, 5000);
+    }, 1000); // Adjust the timeout to match the transition duration
+}
 
-                    // Revert back to the original image after 5 seconds with the same animation
-                    setTimeout(function () {
-                        // Add the 'hidden' class to start the fade-out transition
-                        image.classList.add('hidden');
-
-                        // Change the image source after the fade-out is complete
-                        setTimeout(function () {
-                            image.src = 'static/normal_alex.png';
-
-                            // Remove the 'hidden' class to start the fade-in transition
-                            setTimeout(function () {
-                                image.classList.remove('hidden');
-
-                                // Enable the button after the transition back is complete
-                                incrementButton.disabled = false;
-                                isTransitioning = false;
-                            }, 250); // A small delay to ensure smooth transition
-                        }, 500); // Adjust the timeout to match the transition duration
-                    }, 4000);
-                }, 500); // Adjust the timeout to match the transition duration
-            }, 1000); // Simulate server request delay
-        }
     </script>
 </body>
 </html>
