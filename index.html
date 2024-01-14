@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Counter App</title>
+  <style>
+    .container {
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    h1 {
+      font-size: 36px;
+      color: #333;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      background-color: #fd0;
+      padding: 10px;
+      letter-spacing: 2px;
+    }
+
+    img {
+      width: 300px;
+      transition: opacity 1s ease-in-out;
+    }
+
+    #incrementButton {
+      display: inline-block;
+      outline: 0;
+      border: none;
+      cursor: pointer;
+      padding: 0 24px;
+      border-radius: 50px;
+      min-width: 200px;
+      height: 50px;
+      font-size: 18px;
+      font-weight: bold;
+      background-color: #fd0;
+      color: #222;
+      transition: background-color 0.3s ease-in-out;
+    }
+
+    #incrementButton:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Alexander nicht Juergens</h1>
+    <img id="alexImage" src="/static/normal_alex.png" alt="Alexander Image">
+    <h2>Counter: <span id="counter">0</span></h2>
+    <button type="button" onclick="flipImage()" id="incrementButton">Ich nannte Alexander Jürgen</button>
+  </div>
+
+  <script>
+    var counter = 0;
+
+    function flipImage() {
+      var image = document.getElementById('alexImage');
+      var counterSpan = document.getElementById('counter');
+
+      // Increment the counter
+      counter++;
+
+      // Change the image source after the button click
+      image.src = '/static/angry_alex.png';
+
+      // Update the counter value on the page
+      counterSpan.innerText = counter;
+
+      // Disable the button after the click
+      document.getElementById('incrementButton').disabled = true;
+
+      // Re-enable the button after 5 seconds
+      setTimeout(function() {
+        document.getElementById('incrementButton').disabled = false;
+      }, 5000);
+    }
+  </script>
+</body>
+</html>
