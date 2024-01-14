@@ -8,20 +8,20 @@
       margin-top: 50px;
     }
 
-	body {
-		font-family: Arial, sans-serif; /* Use a common system font or specify a fallback */
-		margin: 0;
-		padding: 0;
-	}
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
 
-	h1 {
-		font-size: 36px;
-		color: #333;
-		text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-		background-color: #fd0;
-		padding: 10px;
-		letter-spacing: 2px;
-	}
+    h1 {
+      font-size: 36px;
+      color: #333;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      background-color: #fd0;
+      padding: 10px;
+      letter-spacing: 2px;
+    }
 
     img {
       width: 300px;
@@ -33,37 +33,34 @@
     }
 
     #incrementButton {
-		display: inline-block;
-		outline: 0;
-		border: none;
-		cursor: pointer;
-		padding: 0 24px;
-		border-radius: 50px;
-		min-width: 200px;
-		height: 50px;
-		font-size: 18px;
-		font-weight: bold;
-		background-color: #fd0;
-		font-weight: 500;
-		color: #222;
-		transition: background-color 0.3s ease-in-out;
-	  }
-  
-	#incrementButton:disabled {
-		background-color: #ccc;
-		cursor: not-allowed;
-	  }
+      display: inline-block;
+      outline: 0;
+      border: none;
+      cursor: pointer;
+      padding: 0 24px;
+      border-radius: 50px;
+      min-width: 200px;
+      height: 50px;
+      font-size: 18px;
+      font-weight: bold;
+      background-color: #fd0;
+      font-weight: 500;
+      color: #222;
+      transition: background-color 0.3s ease-in-out;
+    }
 
+    #incrementButton:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Alexander NICHT Juergen</h1>
-    <img id="alexImage" src="static/normal_alex.png" alt="Alexander Image">
-    <h2>Counter: <span id="counter">{{.Counter}}</span></h2>
-    <form id="incrementForm" action="/increment" method="post">
-      <button type="button" onclick="flipImage()" id="incrementButton"><b>Ich nannte Alexander Jürgen</b></button>
-    </form>
+    <img id="alexImage" src="/static/normal_alex.png" alt="Alexander Image">
+    <h2>Counter: <span id="counter">0</span></h2>
+    <button type="button" onclick="flipImage()" id="incrementButton"><b>Ich nannte Alexander Jürgen</b></button>
   </div>
 
   <script>
@@ -85,46 +82,22 @@
       // Disable the button during transitions
       incrementButton.disabled = true;
 
-      // Submit the form asynchronously using JavaScript
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', '/increment', true);
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-          // Update the counter value on the page
-          counterSpan.innerText = parseInt(counterSpan.innerText) + 1;
+      // Simulate the counter increment
+      counterSpan.innerText = parseInt(counterSpan.innerText) + 1;
 
-          // Change the image source after the fade-out is complete
-          setTimeout(function () {
-            image.src = 'static/angry_alex.png';
+      // Change the image source after the fade-out is complete
+      setTimeout(function () {
+        image.src = '/static/angry_alex.png';
 
-            // Remove the 'hidden' class to start the fade-in transition
-            setTimeout(function () {
-              image.classList.remove('hidden');
-            }, 50); // A small delay to ensure smooth transition
-          }, 1000); // Adjust the timeout to match the transition duration
+        // Remove the 'hidden' class to start the fade-in transition
+        setTimeout(function () {
+          image.classList.remove('hidden');
 
-          // Revert back to the original image after 5 seconds with the same animation
-          setTimeout(function () {
-            // Add the 'hidden' class to start the fade-out transition
-            image.classList.add('hidden');
-
-            // Change the image source after the fade-out is complete
-            setTimeout(function () {
-              image.src = 'static/normal_alex.png';
-
-              // Remove the 'hidden' class to start the fade-in transition
-              setTimeout(function () {
-                image.classList.remove('hidden');
-
-                // Enable the button after the transition back is complete
-                incrementButton.disabled = false;
-                isTransitioning = false;
-              }, 50); // A small delay to ensure smooth transition
-            }, 1000); // Adjust the timeout to match the transition duration
-          }, 5000);
-        }
-      };
-      xhr.send();
+          // Enable the button after the transition is complete
+          incrementButton.disabled = false;
+          isTransitioning = false;
+        }, 50); // A small delay to ensure smooth transition
+      }, 1000); // Adjust the timeout to match the transition duration
     }
   </script>
 </body>
