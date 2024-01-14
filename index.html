@@ -66,8 +66,42 @@
         <button type="button" onclick="flipImage()" id="incrementButton"><b>Ich nannte Alexander Jürgen</b></button>
     </div>
 
-    <script>
-        var isTransitioning = false;
+<script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-database.js"></script>
+
+<script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyCrjBZWQZ6GhFKorWHHzgqqq1r0Q0ONyqM",
+      authDomain: "alex-nicht-juergen.firebaseapp.com",
+      projectId: "alex-nicht-juergen",
+      storageBucket: "alex-nicht-juergen.appspot.com",
+      messagingSenderId: "374207046183",
+      appId: "1:374207046183:web:6e35112265148f55972402"
+    };
+    firebase.initializeApp(firebaseConfig);
+  
+    // Reference to your Firebase Realtime Database
+    var database = firebase.database();
+</script>
+
+<script>
+var isTransitioning = false;
+
+// Function to fetch the counter value from Firebase
+function getCounterValue(callback) {
+    var counterRef = database.ref('counter');
+
+    counterRef.once('value').then(function(snapshot) {
+        var counterValue = snapshot.val() || 0;
+        callback(counterValue);
+    });
+}
+
+// Function to update the counter value in Firebase
+function updateCounterValue(newValue) {
+    var counterRef = database.ref('counter');
+    counterRef.set(newValue);
+}
 
 function flipImage() {
     if (isTransitioning) {
@@ -78,47 +112,54 @@ function flipImage() {
     var counterSpan = document.getElementById('counter');
     var incrementButton = document.getElementById('incrementButton');
 
-    // Add the 'hidden' class to start the fade-out transition
-    image.classList.add('hidden');
-    isTransitioning = true;
+   // Fetch the current counter value from Firebase
+   getCounterValue(function(currentValue) {
+        // Add the 'hidden' class to start the fade-out transition
+        image.classList.add('hidden');
+        isTransitioning = true;
 
-    // Disable the button during transitions
-    incrementButton.disabled = true;
+        // Disable the button during transitions
+        incrementButton.disabled = true;
 
-    // Update the counter value on the page
-    counterSpan.innerText = parseInt(counterSpan.innerText) + 1;
+        // Update the counter value on the page
+        var newCounterValue = currentValue + 1;
+        counterSpan.innerText = newCounterValue;
 
-    // Change the image source after the fade-out is complete
-    setTimeout(function () {
-        image.src = 'static/angry_alex.png';
+        // Update the counter value in Firebase
+        updateCounterValue(newCounterValue);
 
-        // Remove the 'hidden' class to start the fade-in transition
+        // Change the image source after the fade-out is complete
         setTimeout(function () {
-            image.classList.remove('hidden');
-        }, 50); // A small delay to ensure smooth transition
+            image.src = 'static/angry_alex.png';
 
-        // Revert back to the original image after 5 seconds with the same animation
-        setTimeout(function () {
-            // Add the 'hidden' class to start the fade-out transition
-            image.classList.add('hidden');
-
-            // Change the image source after the fade-out is complete
+            // Remove the 'hidden' class to start the fade-in transition
             setTimeout(function () {
-                image.src = 'static/normal_alex.png';
+                image.classList.remove('hidden');
+            }, 50); // A small delay to ensure smooth transition
 
-                // Remove the 'hidden' class to start the fade-in transition
+            // Revert back to the original image after 5 seconds with the same animation
+            setTimeout(function () {
+                // Add the 'hidden' class to start the fade-out transition
+                image.classList.add('hidden');
+
+                // Change the image source after the fade-out is complete
                 setTimeout(function () {
-                    image.classList.remove('hidden');
+                    image.src = 'static/normal_alex.png';
 
-                    // Enable the button after the transition back is complete
-                    incrementButton.disabled = false;
-                    isTransitioning = false;
-                }, 50); // A small delay to ensure smooth transition
-            }, 1000); // Adjust the timeout to match the transition duration
-        }, 5000);
-    }, 1000); // Adjust the timeout to match the transition duration
+                    // Remove the 'hidden' class to start the fade-in transition
+                    setTimeout(function () {
+                        image.classList.remove('hidden');
+
+                        // Enable the button after the transition back is complete
+                        incrementButton.disabled = false;
+                        isTransitioning = false;
+                    }, 50); // A small delay to ensure smooth transition
+                }, 1000); // Adjust the timeout to match the transition duration
+            }, 5000);
+        }, 1000); // Adjust the timeout to match the transition duration
+    });
 }
+</script>
 
-    </script>
 </body>
 </html>
