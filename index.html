@@ -85,6 +85,9 @@
           var image = document.getElementById('alexImage');
           var counterSpan = document.getElementById('counter');
           var incrementButton = document.getElementById('incrementButton');
+
+          var angryAlexImage = new Image();
+          angryAlexImage.src = 'static/angry_alex.png';
   
           // Function to fetch the counter value from Firebase
           function getCounterValue(callback) {
@@ -124,7 +127,7 @@
   
               // Change the image source after the fade-out is complete
               setTimeout(function () {
-                image.src = 'static/angry_alex.png';
+                image.src = angryAlexImage.src;
   
                 // Remove the 'hidden' class to start the fade-in transition
                 setTimeout(function () {
